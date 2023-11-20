@@ -1,0 +1,12 @@
+[package]
+name = "newtype-macros"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+test = false
+doctest = false
+
+[dependencies]
+derive_more = "0.99.17"
+paste = "1.0.14"
