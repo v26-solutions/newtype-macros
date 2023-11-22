@@ -179,7 +179,7 @@ macro_rules! impl_ord_eq {
 
     ($t:ident, with: [$($rhs:ident),+]) => {
         $(
-            impl_ord_eq($t, with: $rhs);
+            impl_ord_eq!($t, with: $rhs);
         )+
     };
 }
