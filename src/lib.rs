@@ -46,7 +46,7 @@ macro_rules! gen_wrap_uint {
                         }
 
                         #[allow(dead_code)]
-                        const fn inner(self) -> $int {
+                        pub const fn inner(self) -> $int {
                             self.0
                         }
 
@@ -103,6 +103,11 @@ macro_rules! wrap_string {
             #[must_use]
             pub fn as_str(&self) -> &str {
                 self.0.as_str()
+            }
+
+            #[must_use]
+            pub fn inner(&self) -> ::std::rc::Rc<String> {
+                self.0.clone()
             }
         }
 
@@ -166,6 +171,18 @@ macro_rules! impl_ord_eq {
             }
         }
 
+        impl PartialEq<&$rhs> for $t {
+            fn eq(&self, other: &&$rhs) -> bool {
+                self.inner().eq(&other.inner())
+            }
+        }
+
+        impl PartialEq<&$t> for $rhs {
+            fn eq(&self, other: &&$t) -> bool {
+                self.inner().eq(&other.inner())
+            }
+        }
+
         impl PartialOrd<$rhs> for $t {
             fn partial_cmp(&self, other: &$rhs) -> Option<std::cmp::Ordering> {
                 self.inner().partial_cmp(&other.inner())
@@ -174,6 +191,18 @@ macro_rules! impl_ord_eq {
 
         impl PartialOrd<$t> for $rhs {
             fn partial_cmp(&self, other: &$t) -> Option<std::cmp::Ordering> {
+                self.inner().partial_cmp(&other.inner())
+            }
+        }
+
+        impl PartialOrd<&$rhs> for $t {
+            fn partial_cmp(&self, other: &&$rhs) -> Option<std::cmp::Ordering> {
+                self.inner().partial_cmp(&other.inner())
+            }
+        }
+
+        impl PartialOrd<&$t> for $rhs {
+            fn partial_cmp(&self, other: &&$t) -> Option<std::cmp::Ordering> {
                 self.inner().partial_cmp(&other.inner())
             }
         }
